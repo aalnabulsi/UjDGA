@@ -1,0 +1,140 @@
+.digital-stamp-card {
+  padding: 8px 32px;
+  background: #F3F4F6;
+}
+
+.digital-stamp-card .digital-stamp-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.digital-stamp-card .digital-stamp-header h6 {
+  margin: 0px;
+  color: #161616;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.digital-stamp-card .digital-stamp-header .btn-digital-stamp-card {
+  cursor: pointer;
+}
+
+.digital-stamp-card .digital-stamp-header .btn-digital-stamp-card span {
+  color: #1B8354;
+  font-size: 14px;
+}
+
+.digital-stamp-card .digital-stamp-header .btn-digital-stamp-card svg,
+.digital-stamp-card .digital-stamp-header .btn-digital-stamp-card img {
+  transition: 0.3s;
+}
+
+.digital-stamp-card .digital-stamp-header.open .btn-digital-stamp-card svg,
+.digital-stamp-card .digital-stamp-header.open .btn-digital-stamp-card img {
+  transform: rotate(180deg);
+}
+
+.btn-digital-stamp-card img {
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+.digital-stamp-card .digital-stamp-body {
+  padding-top: 40px;
+  padding-bottom: 32px;
+  display: none;
+}
+
+.digital-stamp-card .digital-stamp-body .digital-stamp-container {
+  margin-bottom: 32px;
+  display: flex;
+  gap: 32px;
+}
+
+.digital-stamp-card .digital-stamp-body .digital-stamp-container .box {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.digital-stamp-card .digital-stamp-body .digital-stamp-container .box .img-border-rounded {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #067647;
+  border-radius: 100%;
+}
+
+.digital-stamp-card .digital-stamp-body .digital-stamp-container .box h6 {
+  margin-top: 0px;
+  margin-bottom: 12px;
+  color: #161616;
+  font-size: 18px;
+}
+
+.digital-stamp-card .digital-stamp-body .digital-stamp-container .box .green-text {
+  color: #1B8354;
+}
+
+.digital-stamp-card .digital-stamp-body .digital-stamp-container .box p {
+  margin: 0px;
+  color: #384250;
+  font-size: 16px;
+}
+
+.digital-stamp-card .digital-stamp-body .stamp-link-box {
+  padding: 8px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  background: #FFF;
+}
+
+.digital-stamp-card .digital-stamp-body .stamp-link-box p {
+  margin: 0px;
+  color: #161616;
+  font-size: 16px;
+}
+
+.digital-stamp-card .digital-stamp-body .stamp-link-box a {
+  color: #1B8354;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.stamp-ar {
+  direction: rtl;
+  position: relative;
+  z-index: 1;
+}
+
+.stamp-en {
+  direction: ltr;
+}
+
+@media (max-width: 768px) {
+  .digital-stamp-card {
+    padding: 8px 16px;
+  }
+
+  .digital-stamp-card .digital-stamp-header {
+    flex-wrap: wrap;
+  }
+
+  .digital-stamp-card .digital-stamp-header .btn-digital-stamp-card {
+    flex: 100%;
+    margin-right: 33px;
+  }
+
+  .digital-stamp-card .digital-stamp-body .digital-stamp-container {
+    flex-direction: column;
+  }
+
+  [dir="ltr"] .digital-stamp-card .digital-stamp-header .btn-digital-stamp-card {
+    margin-right: 0px;
+    margin-left: 33px;
+  }
+}

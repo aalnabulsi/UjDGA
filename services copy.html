@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>service2 - الخدمات الإلكترونية</title>
+  <style>
+    :root{--bg:#f3f5f7;--text:#1f2d44;--line:#bfc8d2;--green:#118a50}
+    body{margin:0;background:var(--bg);font-family:"Tajawal",system-ui,sans-serif;color:var(--text)}
+    .container{max-width:1200px;margin:56px auto;padding:0 24px}
+    .title{text-align:center}.title h1{font-size:62px;margin:0}.title p{font-size:46px;margin:16px 0 36px;color:#2f3f56}
+
+    .tabs{display:flex;justify-content:center;list-style:none;padding:0;margin:0 0 30px}
+    .tabs button{border:1px solid #222;background:transparent;padding:10px 28px;font-size:46px;font-weight:700;cursor:pointer;color:#2c3646}
+    .tabs button.active{border-color:var(--green);box-shadow:inset 0 -4px 0 var(--green)}
+
+    .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .nds-card{background:#fff;border-radius:20px;padding:20px;border:1px solid var(--line)}
+    .nds-card-header{display:flex;justify-content:flex-start}
+    .nds-featured-icon{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:#eaf7ef;color:var(--green)}
+    .nds-card-title{font-size:58px;margin:14px 0;color:#26334a}
+    .nds-card-description{font-size:48px;line-height:1.5;margin:0;color:#37485f;min-height:180px}
+    .nds-card-tags{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .nds-tag{border-radius:8px;padding:6px 12px;font-size:28px;border:1px solid #cbd5e1;background:#f8fafc}
+    .nds-blue{color:#1e40af;border-color:#9dbcf5;background:#edf4ff}.nds-green{color:#166534;border-color:#8fddb1;background:#ecfff2}.nds-gray{color:#334155}
+    .actions{display:flex;gap:8px;justify-content:flex-start}.icon-btn{width:54px;height:54px;background:#eef0f2;border:none;border-radius:9px;color:#202733}
+    svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9}
+    @media (max-width:900px){.cards{grid-template-columns:1fr}.title h1{font-size:40px}.title p,.tabs button,.nds-card-title{font-size:28px}.nds-card-description{font-size:22px;min-height:unset}}
+  </style>
+</head>
+<body>
+<main class="container">
+  <div class="title">
+    <h1>الخدمات الإلكترونية</h1>
+    <p>تقدم جامعة جدة العديد من الخدمات الإلكترونية لمنسوبيها وزوار الموقع.</p>
+  </div>
+
+  <ul class="tabs" id="tabs"></ul>
+  <section class="cards" id="cards"></section>
+</main>
+
+<script>
+const tabs=['كافة الخدمات','الطلاب','هيئة التدريس','الموظفين','الزوار'];
+let active='الطلاب';
+const services=[
+{title:'منصة الشؤون الأكاديمية',desc:'يتم بواسطة المنصة إدارة وتنفيذ كافة العمليات على السجلات الأكاديمية وفتح وتعديل الشعب الدراسية والخطط الدراسية.',aud:['الطلاب','هيئة التدريس'],tags:['أكاديمي','سجلات','فعال']},
+{title:'البريد الإلكتروني',desc:'يوفر Office 365 بريد جامعي وخدمة تخزين سحابي للملفات ومشاركتها بالإضافة إلى تطبيقات تعاونية بين مجموعات العمل.',aud:['الطلاب','الموظفين'],tags:['تواصل','Office365','فعال']},
+{title:'الدخول المباشر على بلاك بورد',desc:'الوصول لنظام إدارة التعلم الإلكتروني لمتابعة المقررات والمحاضرات والواجبات والاختبارات.',aud:['الطلاب','هيئة التدريس'],tags:['تعلم','LMS','فعال']},
+{title:'خدمة تحديث البيانات',desc:'منصة لتحديث بيانات جميع منسوبي الجامعة من البيانات الشخصية إلى الخبرات وغيرها من البيانات.',aud:['الموظفين','هيئة التدريس','الطلاب'],tags:['بيانات','بوابة','فعال']},
+];
+const icons={heart:'<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10z"/></svg>',mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',screen:'<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="12" rx="2"/><path d="M9 21h6M12 15v6"/></svg>',arrow:'<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>'};
+
+function renderTabs(){document.getElementById('tabs').innerHTML=tabs.map(t=>`<li><button class="${active===t?'active':''}" data-v="${t}">${t}</button></li>`).join('');
+ document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{active=b.dataset.v;renderTabs();renderCards();});}
+
+function serviceMatches(s){return active==='كافة الخدمات'||s.aud.includes(active)}
+function renderCards(){const data=services.filter(serviceMatches);document.getElementById('cards').innerHTML=data.map(s=>`
+<div class="nds-card nds-stroke">
+  <div class="nds-card-header"><div class="nds-card-featured-icon"><span class="nds-featured-icon nds-circle nds-lg">${icons.heart}</span></div></div>
+  <div class="nds-card-content">
+    <div class="nds-card-text"><h3 class="nds-card-title">${s.title}</h3><p class="nds-card-description">${s.desc}</p></div>
+    <div class="nds-card-meta"><div class="nds-card-tags"><span class="nds-tag nds-blue nds-sm"><span class="nds-label">${s.tags[0]}</span></span><span class="nds-tag nds-gray nds-sm"><span class="nds-label">${s.tags[1]}</span></span><span class="nds-tag nds-green nds-sm"><span class="nds-label">${s.tags[2]}</span></span></div></div>
+  </div>
+  <div class="actions"><button class="icon-btn">${icons.mail}</button><button class="icon-btn">${icons.screen}</button><button class="icon-btn">${icons.arrow}</button></div>
+</div>`).join('');}
+
+renderTabs();renderCards();
+</script>
+</body>
+</html>
+services.html
+services.html
+New
++61
+-0
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الخدمات الإلكترونية</title>
+  <style>
+    :root{--bg:#f3f5f7;--text:#111827;--muted:#374151;--line:#d7dce2;--primary:#0f8a52}
+    *{box-sizing:border-box} body{margin:0;font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1160px;margin:72px auto;padding:0 24px}
+    h1{font-size:64px;margin:0 0 8px}.sub{font-size:40px;color:#2f3948;margin:0 0 56px}
+    .tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:28px}
+    .tab{padding:10px 26px;font-size:42px;font-weight:700;color:#374151;border-bottom:4px solid transparent;cursor:pointer}
+    .tab.active{color:#111827;border-color:var(--primary)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+    .card{background:#fff;border:1px solid #cad2db;border-radius:24px;padding:28px;display:flex;flex-direction:column;min-height:420px}
+    .icon{width:72px;height:72px;border-radius:50%;background:#eaf7ef;color:var(--primary);display:grid;place-items:center;margin-bottom:18px}
+    .card h3{font-size:50px;line-height:1.3;margin:0 0 14px;color:#243042}
+    .card p{font-size:40px;line-height:1.55;color:#334155;margin:0 0 16px;flex:1}
+    .actions{display:flex;gap:14px;justify-content:flex-start}
+    .a{width:74px;height:62px;border:0;border-radius:10px;background:#eef0f2;display:grid;place-items:center}
+    svg{width:33px;height:33px;stroke:currentColor;fill:none;stroke-width:1.7}
+    @media (max-width:900px){h1{font-size:40px}.sub{font-size:22px}.tab{font-size:26px;padding:8px 14px}.grid{grid-template-columns:1fr}.card h3{font-size:30px}.card p{font-size:22px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <h1>الخدمات الإلكترونية</h1>
+  <p class="sub">تقدم جامعة جدة العديد من الخدمات الإلكترونية لمنسوبيها وزوار الموقع.</p>
+
+  <nav class="tabs" id="tabs"></nav>
+  <section class="grid" id="cards"></section>
+</main>
+
+<script>
+const icons={
+  heart:'<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.6-7 10-7 10z"/></svg>',
+  mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>',
+  screen:'<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M9 21h6M12 17v4"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24"><path d="M6 12h12"/><path d="m13 6 6 6-6 6"/></svg>'
+};
+const services=[
+ {title:'البريد الإلكتروني',desc:'يوفر Office 365 بريد جامعي وخدمة تخزين سحابي للملفات ومشاركتها بالإضافة إلى تطبيقات تعاونية بين مجموعات العمل.',aud:'الطلاب'},
+ {title:'الخدمات الذاتية الأكاديمية لأعضاء هيئة التدريس',desc:'يتيح النظام تنفيذ العديد من الخدمات الأكاديمية لأعضاء الهيئة التعليمية وتشمل الاطلاع وتنفيذ العمليات على الجدول الدراسي ورصد الدرجات النهائية ومتابعة حضور وغياب الطلاب خلال العام الدراسي وغيرها من الخدمات المختلفة.',aud:'هيئة التدريس'},
+ {title:'منصة الشؤون الأكاديمية',desc:'يتم بواسطة المنصة إدارة وتنفيذ كافة العمليات على السجلات الأكاديمية وفتح وتعديل الشعب الدراسية والخطط الدراسية.',aud:'الطلاب'},
+ {title:'خدمة تحديث البيانات',desc:'منصة خاصة بتحديث بيانات جميع منسوبي الجامعة بدءًا من البيانات الشخصية والخبرات وغيرها من البيانات.',aud:'الموظفين'},
+ {title:'الدخول الموحد (كفاءة)',desc:'تسجيل دخول موحد وآمن للوصول إلى جميع الأنظمة والخدمات الإلكترونية التابعة للجامعة.',aud:'كافة الخدمات'},
+ {title:'الدخول المباشر على بلاك بورد',desc:'الوصول لنظام إدارة التعلم الإلكتروني لمتابعة المقررات والمحاضرات والواجبات والاختبارات.',aud:'الطلاب'},
+];
+const tabs=['كافة الخدمات','الطلاب','هيئة التدريس','الموظفين','الزوار'];
+let active='كافة الخدمات';
+const tabsEl=document.getElementById('tabs'); const cardsEl=document.getElementById('cards');
+
+function renderTabs(){tabsEl.innerHTML=tabs.map(t=>`<button class="tab ${t===active?'active':''}" data-tab="${t}">${t}</button>`).join('');
+ tabsEl.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{active=b.dataset.tab;renderTabs();renderCards();});}
+function renderCards(){const data=active==='كافة الخدمات'?services:services.filter(s=>s.aud===active);
+ cardsEl.innerHTML=data.map(s=>`<article class="card"><div class="icon">${icons.heart}</div><h3>${s.title}</h3><p>${s.desc}</p><div class="actions"><button class="a" aria-label="البريد">${icons.mail}</button><button class="a" aria-label="العرض">${icons.screen}</button><button class="a" aria-label="الانتقال">${icons.arrow}</button></div></article>`).join('')||'<p>لا توجد خدمات لهذه الفئة.</p>';}
+renderTabs();renderCards();
+</script>
+</body>
+</html>
